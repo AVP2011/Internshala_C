@@ -65,7 +65,7 @@ const JobDetail = () => {
 
     try {
       setIsSubmitting(true);
-      await axios.post(`https://internshala-c.onrender.com/api/application`, applicationData);
+      await axios.post(`s://internshala-c.onrender.com/api/application`, applicationData);
       toast.success("Application submitted successfully!");
       setIsModalOpen(false);
       router.push("/job"); // redirect to jobs page after submission

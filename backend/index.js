@@ -7,7 +7,7 @@ const app = express();
 const port = 5000;
 
 // Middlewares
-app.use(cors({ origin: "http://localhost:3000", credentials: true })); // allow frontend
+app.use(cors({ origin: "https://internshala-c-b9st.vercel.app", credentials: true })); // allow frontend
 app.use(express.json({ limit: "50mb" }));
 
 // Default route
