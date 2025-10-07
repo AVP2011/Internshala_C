@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { login, logout, selectUser } from "../Feature/userSlice";
 
+
 const Navbar = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();

@@ -6,7 +6,7 @@ import { store } from "../store/store";
 import { Provider, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { auth } from "@/firebase/firebase";
-import { login, logout } from "../Feature/Userslice"; // ✅ adjust path if needed
+import { login, logout } from "../Feature/userSlice"; // ✅ adjust path if needed
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
