@@ -55,7 +55,7 @@ const PostJob: React.FC = () => {
 
     try {
       setIsLoading(true);
-      const res = await axios.post("http://localhost:5000/api/job", formdata, {
+      const res = await axios.post("https://internshala-c.onrender.com/api/job", formdata, {
         headers: { "Content-Type": "application/json" },
       });
 

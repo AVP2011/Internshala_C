@@ -33,7 +33,7 @@ const JobDetail = () => {
 
     const fetchJob = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/job/${id}`);
+        const res = await axios.get(`https://internshala-c.onrender.com/api/job/${id}`);
         setJobData(res.data);
       } catch (error) {
         console.error("Error fetching job:", error);
@@ -65,7 +65,7 @@ const JobDetail = () => {
 
     try {
       setIsSubmitting(true);
-      await axios.post(`http://localhost:5000/api/application`, applicationData);
+      await axios.post(`https://internshala-c.onrender.com/api/application`, applicationData);
       toast.success("Application submitted successfully!");
       setIsModalOpen(false);
       router.push("/job"); // redirect to jobs page after submission

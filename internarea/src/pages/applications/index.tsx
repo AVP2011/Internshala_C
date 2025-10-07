@@ -45,7 +45,7 @@ const ApplicationsPage: React.FC = () => {
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const res = await axios.get<Application[]>("http://localhost:5000/api/application");
+        const res = await axios.get<Application[]>("https://internshala-c.onrender.com/api/application");
         // Default status to Pending if missing
         const appsWithDefaultStatus = res.data.map((app) => ({
           ...app,
@@ -63,7 +63,7 @@ const ApplicationsPage: React.FC = () => {
   // Handle accept/reject
   const handleAcceptReject = async (id: string, action: "accepted" | "rejected") => {
     try {
-      const res = await axios.put(`http://localhost:5000/api/application/${id}`, { action });
+      const res = await axios.put(`https://internshala-c.onrender.com/api/application/${id}`, { action });
       setApplications((prev) =>
         prev.map((app) => (app._id === id ? { ...app, status: action } : app))
       );

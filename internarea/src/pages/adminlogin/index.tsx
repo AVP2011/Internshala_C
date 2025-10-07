@@ -26,7 +26,7 @@ const AdminLogin = () => {
       setIsLoading(true);
 
       const res = await axios.post(
-        "http://localhost:5000/api/admin/adminlogin", // use http, not https
+        "https://internshala-c.onrender.com/api/admin/adminlogin", // use http, not https
         formData,
         {
           headers: { "Content-Type": "application/json" },

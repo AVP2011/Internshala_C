@@ -37,7 +37,7 @@ const UserApplications: React.FC = () => {
     if (!user) return; // wait until user is available
     const fetchApplications = async () => {
       try {
-        const res = await axios.get<Application[]>("http://localhost:5000/api/application");
+        const res = await axios.get<Application[]>("https://internshala-c.onrender.com/api/application");
         // Only keep applications belonging to logged-in user
         const userApps = res.data.filter(app => app.email === user.email);
         setApplications(userApps);

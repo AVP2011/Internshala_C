@@ -30,7 +30,7 @@ const Index = () => {
     if (!id) return;
     const fetchData = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/internship/${id}`);
+        const res = await axios.get(`https://internshala-c.onrender.com/api/internship/${id}`);
         setInternship(res.data);
       } catch (error) {
         console.error("Error fetching internship:", error);
@@ -69,7 +69,7 @@ const Index = () => {
         availability ,
       };
 
-      await axios.post(`http://localhost:5000/api/application`, applicationData);
+      await axios.post(`https://internshala-c.onrender.com/api/application`, applicationData);
       toast.success("Application submitted successfully!");
       setIsModalOpen(false);
       router.push("/internship");
