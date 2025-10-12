@@ -21,7 +21,8 @@ const canPost = async (userId) => {
 // ✅ Create Post
 exports.createPost = async (req, res) => {
   try {
-    const { userId, caption, mediaUrl } = req.body;
+    const body = req.body || {};
+    const { userId, caption, mediaUrl } = body;
 
     if (!userId || !caption) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -38,15 +39,13 @@ exports.createPost = async (req, res) => {
     }
 
     const post = await Post.create({ userId, caption, mediaUrl });
-    res.status(201).json({
-      message: "Post created successfully",
-      post,
-    });
+    res.status(201).json({ message: "Post created successfully", post });
   } catch (err) {
     console.error("❌ Error in createPost:", err.message);
     res.status(500).json({ error: err.message });
   }
 };
+
 // ✅ Get all posts (feed)
 exports.getPosts = async (req, res) => {
   console.log("🔥 getPosts controller hit");
