@@ -2,9 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const { connect } = require("./db");
 const router = require("./Routes/index");
-
+const postRoutes = require("./Routes/postRoutes");
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 // ✅ Unified CORS setup
 const allowedOrigins = [
@@ -35,7 +35,10 @@ app.get("/", (req, res) => {
 });
 
 // API routes
+app.use("/api/posts", postRoutes);
 app.use("/api", router);
+
+
 
 // Connect to database
 connect();
