@@ -9,8 +9,10 @@ const port = process.env.PORT || 5000;
 // ✅ Flexible CORS setup for Vercel + localhost
 const allowedOrigins = [
   "http://localhost:3000",
-  /^https:\/\/internshala-c-[a-z0-9\-]+\.vercel\.app$/, // matches all Vercel preview/live URLs
+  "https://internshala-c.vercel.app", // ✅ Add this if you're using Vercel live
+  /^https:\/\/internshala-c-[a-z0-9\-]+\.vercel\.app$/, // ✅ Preview URLs
 ];
+
 
 app.use(
   cors({
