@@ -16,18 +16,19 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (
-        !origin ||
-        allowedOrigins.some((allowed) =>
-          typeof allowed === "string" ? allowed === origin : allowed.test(origin)
-        )
-      ) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+   origin: function (origin, callback) {
+  console.log("🌐 Incoming origin:", origin); // ← Add this
+  if (
+    !origin ||
+    allowedOrigins.some((allowed) =>
+      typeof allowed === "string" ? allowed === origin : allowed.test(origin)
+    )
+  ) {
+    callback(null, true);
+  } else {
+    callback(new Error("Not allowed by CORS"));
+  }
+},
     credentials: true,
   })
 );
