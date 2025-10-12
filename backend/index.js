@@ -9,7 +9,7 @@ const port = process.env.PORT || 5000;
 // ✅ Flexible CORS setup for Vercel + localhost
 const allowedOrigins = [
   "http://localhost:3000",
-  /^https:\/\/internshala-c-[a-z0-9\-]+\.vercel\.app$/, // ✅ matches all Vercel preview/live URLs
+  /^https:\/\/internshala-c-[a-z0-9\-]+\.vercel\.app$/, // matches all Vercel preview/live URLs
 ];
 
 app.use(
@@ -41,6 +41,11 @@ app.get("/", (req, res) => {
 // ✅ API routes
 app.use("/api/posts", postRoutes);
 app.use("/api", router);
+
+// ✅ Fallback route for debugging
+app.use("*", (req, res) => {
+  res.status(404).send("Route not found");
+});
 
 // ✅ Connect to database
 connect();

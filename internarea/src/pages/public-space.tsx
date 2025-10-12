@@ -21,11 +21,41 @@ interface Post {
 
 const PublicSpace: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [caption, setCaption] = useState("");
+  const [mediaUrl, setMediaUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const fetchPosts = async () => {
-    const res = await axios.get<Post[]>("https://internshala-c.onrender.com/api/posts"); // Tell TypeScript this is Post[]
-    setPosts(res.data);
+    try {
+      const res = await axios.get<Post[]>("https://internshala-c.onrender.com/api/posts");
+      setPosts(res.data);
+    } catch (err: any) {
+      console.error("❌ Error fetching posts:", err.message);
+    }
   };
+
+  const handleCreatePost = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    try {
+      const res = await axios.post("https://internshala-c.onrender.com/api/posts/create", {
+        userId: "CURRENT_USER_ID", // Replace with actual user ID
+        caption,
+        mediaUrl,
+      });
+      console.log("✅ Post created:", res.data);
+      setCaption("");
+      setMediaUrl("");
+      fetchPosts();
+    } catch (err: any) {
+  console.error("❌ Error creating post:", err.response?.data || err.message);
+  setError(err.response?.data?.message || "Something went wrong");
+} finally {
+  setLoading(false);
+}
+};
 
   const likePost = async (postId: string) => {
     await axios.post("https://internshala-c.onrender.com/api/posts/like", { postId, userId: "CURRENT_USER_ID" });
@@ -44,6 +74,29 @@ const PublicSpace: React.FC = () => {
   return (
     <div>
       <h2>Public Space</h2>
+
+      {/* ✅ Create Post Form */}
+      <form onSubmit={handleCreatePost} style={{ marginBottom: "2rem" }}>
+        <input
+          type="text"
+          placeholder="What's on your mind?"
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Image URL (optional)"
+          value={mediaUrl}
+          onChange={(e) => setMediaUrl(e.target.value)}
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? "Posting..." : "Create Post"}
+        </button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+      </form>
+
+      {/* ✅ Post Feed */}
       {posts.map((post) => (
         <PostCard key={post._id} post={post} likePost={likePost} commentPost={commentPost} />
       ))}
