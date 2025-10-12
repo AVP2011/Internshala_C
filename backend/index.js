@@ -6,17 +6,21 @@ const postRoutes = require("./Routes/postRoutes");
 const app = express();
 const port = process.env.PORT || 5000;
 
-// ✅ Unified CORS setup
+// ✅ Flexible CORS setup for Vercel + localhost
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://internshala-c-b9st.vercel.app",
-  "https://internshala-c-pihq.vercel.app", // your live Vercel domain
+  /^https:\/\/internshala-c-[a-z0-9\-]+\.vercel\.app$/, // ✅ matches all Vercel preview/live URLs
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (
+        !origin ||
+        allowedOrigins.some((allowed) =>
+          typeof allowed === "string" ? allowed === origin : allowed.test(origin)
+        )
+      ) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -26,24 +30,22 @@ app.use(
   })
 );
 
-// Middleware
+// ✅ Middleware
 app.use(express.json({ limit: "50mb" }));
 
-// Default route
+// ✅ Default route
 app.get("/", (req, res) => {
   res.send("Hello this is InternArea backend 🚀");
 });
 
-// API routes
+// ✅ API routes
 app.use("/api/posts", postRoutes);
 app.use("/api", router);
 
-
-
-// Connect to database
+// ✅ Connect to database
 connect();
 
-// Start server
+// ✅ Start server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
