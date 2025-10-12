@@ -4,7 +4,7 @@ const User = require("../Model/User");
 // 🔍 Check post limit based on friends
 const canPost = async (userId) => {
   const user = await User.findById(userId).populate("friends");
-  if (!user) return false; // ✅ Prevent crash if user doesn't exist
+  if (!user || !user.friends) return false; // ✅ Prevent crash if user is null
 
   let limit = 1;
   if (user.friends.length === 2) limit = 2;
