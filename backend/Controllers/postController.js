@@ -4,6 +4,8 @@ const User = require("../Model/User");
 // 🔍 Check post limit based on friends
 const canPost = async (userId) => {
   const user = await User.findById(userId).populate("friends");
+  if (!user) return false; // ✅ Prevent crash if user doesn't exist
+
   let limit = 1;
   if (user.friends.length === 2) limit = 2;
   if (user.friends.length > 10) limit = Infinity;
@@ -20,22 +22,31 @@ const canPost = async (userId) => {
 exports.createPost = async (req, res) => {
   try {
     const { userId, caption, mediaUrl } = req.body;
+
     if (!userId || !caption) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    if (!(await canPost(userId))) {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const allowed = await canPost(userId);
+    if (!allowed) {
       return res.status(400).json({ message: "Post limit reached for today" });
     }
 
     const post = await Post.create({ userId, caption, mediaUrl });
-    res.status(201).json(post);
+    res.status(201).json({
+      message: "Post created successfully",
+      post,
+    });
   } catch (err) {
     console.error("❌ Error in createPost:", err.message);
     res.status(500).json({ error: err.message });
   }
 };
-
 // ✅ Get all posts (feed)
 exports.getPosts = async (req, res) => {
   console.log("🔥 getPosts controller hit");
