@@ -3,6 +3,9 @@ const cors = require("cors");
 const { connect } = require("./db");
 const router = require("./Routes/index");
 const postRoutes = require("./Routes/postRoutes");
+const dotenv = require("dotenv");
+dotenv.config();
+const loginRoutes = require("./Routes/loginRoutes");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -56,6 +59,7 @@ app.get("/", (req, res) => {
 // ✅ API routes
 app.use("/api/posts", postRoutes);
 app.use("/api", router);
+app.use("/api/login", loginRoutes);
 
 // ✅ Fallback route (Express 5+ safe)
 app.use((req, res) => {

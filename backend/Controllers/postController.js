@@ -25,27 +25,38 @@ const canPost = async (userId) => {
 // ✅ Create Post
 exports.createPost = async (req, res) => {
   try {
-    const { userId, caption, mediaUrl } = req.body;
+    const { userId: firebaseId, caption, mediaUrl } = req.body;
     console.log("📦 Incoming post data:", req.body);
 
-    if (!userId || !caption) {
+    if (!firebaseId || !caption) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const user = await User.findById(userId);
+    // 🔹 Find MongoDB user by Firebase UID
+    let user = await User.findOne({ firebaseId });
+
+    // 🔹 If user doesn't exist in MongoDB, create it
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      user = await User.create({
+        firebaseId,
+        name: "Anonymous", // optional: fetch from Firebase auth if available
+      });
     }
 
-    const allowed = await canPost(userId);
+    const allowed = await canPost(user._id); // Use MongoDB _id here
     if (!allowed) {
       return res.status(400).json({ message: "Post limit reached for today" });
     }
 
-    const post = await Post.create({ userId, caption, mediaUrl });
+    const post = await Post.create({
+      userId: user._id,
+      caption,
+      mediaUrl,
+    });
+
     res.status(201).json({ message: "Post created successfully", post });
   } catch (err) {
-    console.error("❌ Error in createPost:", err.message);
+    console.error("❌ Error in createPost:", err);
     res.status(500).json({ error: err.message });
   }
 };

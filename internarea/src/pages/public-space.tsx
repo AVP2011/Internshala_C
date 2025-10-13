@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import PostCard from "../Components/PostCard";
+import { useSelector } from "react-redux";
+import { selectUser } from "../Feature/userSlice";
 
 interface Comment {
   _id?: string;
@@ -19,11 +21,8 @@ interface Post {
   createdAt: string;
 }
 
-interface PublicSpaceProps {
-  currentUserId: string;
-}
-
-const PublicSpace: React.FC<PublicSpaceProps> = ({ currentUserId }) => {
+const PublicSpace: React.FC = () => {
+  const currentUser = useSelector(selectUser);
   const [posts, setPosts] = useState<Post[]>([]);
   const [caption, setCaption] = useState("");
   const [mediaUrl, setMediaUrl] = useState("");
@@ -32,7 +31,9 @@ const PublicSpace: React.FC<PublicSpaceProps> = ({ currentUserId }) => {
 
   const fetchPosts = async () => {
     try {
-      const res = await axios.get<Post[]>("https://internshala-c.onrender.com/api/posts");
+      const res = await axios.get<Post[]>(
+        "https://internshala-c.onrender.com/api/posts"
+      );
       setPosts(res.data);
     } catch (err: any) {
       console.error("❌ Error fetching posts:", err.message);
@@ -44,19 +45,36 @@ const handleCreatePost = async (e: React.FormEvent) => {
   setLoading(true);
   setError("");
 
-  console.log("📤 Creating post with:", {
-    userId: currentUserId,
+  console.log("🧠 currentUser from Redux:", currentUser);
+  console.log("📝 Attempting to create post with:", {
+    firebaseId: currentUser?.firebaseId,
+    name: currentUser?.name,
+    email: currentUser?.email,
+    photo: currentUser?.photo,
     caption,
     mediaUrl,
   });
 
+  if (!currentUser?.firebaseId || !currentUser?.name || !currentUser?.email) {
+    console.warn("⚠️ Missing user info. Aborting post creation.");
+    setError("User info missing. Please login again.");
+    setLoading(false);
+    return;
+  }
+
   try {
-    const res = await axios.post("https://internshala-c.onrender.com/api/posts/create", {
-      userId: currentUserId,
-      caption,
-      mediaUrl,
-    });
-    console.log("✅ Post created:", res.data);
+    const res = await axios.post(
+      "https://internshala-c.onrender.com/api/posts/create",
+      {
+        firebaseId: currentUser.firebaseId,
+        caption,
+        mediaUrl,
+        name: currentUser.name,
+        email: currentUser.email,
+        photo: currentUser.photo || "",
+      }
+    );
+    console.log("✅ Post created successfully:", res.data);
     setCaption("");
     setMediaUrl("");
     fetchPosts();
@@ -68,31 +86,32 @@ const handleCreatePost = async (e: React.FormEvent) => {
   }
 };
 
+const likePost = async (postId: string) => {
+  console.log("👍 Liking post:", postId, "by user:", currentUser?.firebaseId);
+  try {
+    await axios.post("https://internshala-c.onrender.com/api/posts/like", {
+      postId,
+      userId: currentUser.firebaseId,
+    });
+    fetchPosts();
+  } catch (err) {
+    console.error("❌ Error liking post:", err);
+  }
+};
 
-  const likePost = async (postId: string) => {
-    try {
-      await axios.post("https://internshala-c.onrender.com/api/posts/like", {
-        postId,
-        userId: currentUserId,
-      });
-      fetchPosts();
-    } catch (err) {
-      console.error("❌ Error liking post:", err);
-    }
-  };
-
-  const commentPost = async (postId: string, text: string) => {
-    try {
-      await axios.post("https://internshala-c.onrender.com/api/posts/comment", {
-        postId,
-        userId: currentUserId,
-        text,
-      });
-      fetchPosts();
-    } catch (err) {
-      console.error("❌ Error commenting:", err);
-    }
-  };
+const commentPost = async (postId: string, text: string) => {
+  console.log("💬 Commenting on post:", postId, "by user:", currentUser?.firebaseId, "text:", text);
+  try {
+    await axios.post("https://internshala-c.onrender.com/api/posts/comment", {
+      postId,
+      userId: currentUser.firebaseId,
+      text,
+    });
+    fetchPosts();
+  } catch (err) {
+    console.error("❌ Error commenting:", err);
+  }
+};
 
   useEffect(() => {
     fetchPosts();
@@ -102,7 +121,6 @@ const handleCreatePost = async (e: React.FormEvent) => {
     <div style={styles.container}>
       <h2 style={styles.heading}>🌐 Public Space</h2>
 
-      {/* ✅ Create Post Form */}
       <form onSubmit={handleCreatePost} style={styles.form}>
         <input
           type="text"
@@ -125,7 +143,6 @@ const handleCreatePost = async (e: React.FormEvent) => {
         {error && <p style={styles.error}>{error}</p>}
       </form>
 
-      {/* ✅ Post Feed */}
       <div style={styles.feed}>
         {posts.length === 0 ? (
           <p>No posts yet. Be the first to share something!</p>
@@ -145,46 +162,13 @@ const handleCreatePost = async (e: React.FormEvent) => {
 };
 
 const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    maxWidth: "700px",
-    margin: "0 auto",
-    padding: "2rem",
-    fontFamily: "sans-serif",
-  },
-  heading: {
-    textAlign: "center",
-    marginBottom: "2rem",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "1rem",
-    marginBottom: "2rem",
-  },
-  input: {
-    padding: "0.75rem",
-    fontSize: "1rem",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-  },
-  button: {
-    padding: "0.75rem",
-    fontSize: "1rem",
-    backgroundColor: "#007bff",
-    color: "#fff",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-  },
-  error: {
-    color: "red",
-    fontWeight: "bold",
-  },
-  feed: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "1.5rem",
-  },
+  container: { maxWidth: "700px", margin: "0 auto", padding: "2rem", fontFamily: "sans-serif" },
+  heading: { textAlign: "center", marginBottom: "2rem" },
+  form: { display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "2rem" },
+  input: { padding: "0.75rem", fontSize: "1rem", borderRadius: "5px", border: "1px solid #ccc" },
+  button: { padding: "0.75rem", fontSize: "1rem", backgroundColor: "#007bff", color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer" },
+  error: { color: "red", fontWeight: "bold" },
+  feed: { display: "flex", flexDirection: "column", gap: "1.5rem" },
 };
 
 export default PublicSpace;
