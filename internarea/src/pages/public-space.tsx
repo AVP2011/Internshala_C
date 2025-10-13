@@ -39,27 +39,35 @@ const PublicSpace: React.FC<PublicSpaceProps> = ({ currentUserId }) => {
     }
   };
 
-  const handleCreatePost = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-    try {
-      const res = await axios.post("https://internshala-c.onrender.com/api/posts/create", {
-        userId: currentUserId,
-        caption,
-        mediaUrl,
-      });
-      console.log("✅ Post created:", res.data);
-      setCaption("");
-      setMediaUrl("");
-      fetchPosts();
-    } catch (err: any) {
-      console.error("❌ Error creating post:", err.response?.data || err.message);
-      setError(err.response?.data?.message || "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  };
+const handleCreatePost = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
+  setError("");
+
+  console.log("📤 Creating post with:", {
+    userId: currentUserId,
+    caption,
+    mediaUrl,
+  });
+
+  try {
+    const res = await axios.post("https://internshala-c.onrender.com/api/posts/create", {
+      userId: currentUserId,
+      caption,
+      mediaUrl,
+    });
+    console.log("✅ Post created:", res.data);
+    setCaption("");
+    setMediaUrl("");
+    fetchPosts();
+  } catch (err: any) {
+    console.error("❌ Error creating post:", err.response?.data || err.message);
+    setError(err.response?.data?.message || "Something went wrong");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const likePost = async (postId: string) => {
     try {

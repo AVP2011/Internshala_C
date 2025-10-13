@@ -15,7 +15,7 @@ router.post("/like", postController.likePost);
 router.post("/comment", postController.commentPost);
 
 // ✅ Test route for debugging
-router.get("/test", (req, res) => {
+router.get("/test", (_req, res) => {
   res.send("✅ Test route working");
 });
 
