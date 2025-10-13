@@ -33,11 +33,15 @@ const corsOptions = {
 
 // ✅ Apply CORS middleware
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // Preflight support
 
-// ✅ Optional fallback for edge cases (use only if needed)
+// ✅ Handle preflight OPTIONS requests manually
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    return res.sendStatus(200);
+  }
   next();
 });
 
@@ -53,8 +57,8 @@ app.get("/", (req, res) => {
 app.use("/api/posts", postRoutes);
 app.use("/api", router);
 
-// ✅ Fallback route for debugging
-app.use("*", (req, res) => {
+// ✅ Fallback route (Express 5+ safe)
+app.use((req, res) => {
   res.status(404).send("Route not found");
 });
 

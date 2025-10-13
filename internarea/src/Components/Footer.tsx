@@ -7,7 +7,7 @@ export default function Footer() {
         
         {/* Logo & About */}
         <div>
-          <h2 className="text-white text-xl font-bold">InternArena</h2>
+          <h2 className="text-white text-xl font-bold">InternArea</h2>
           <p className="mt-3 text-sm">
             Empowering students with internships, jobs, and trainings to
             kickstart their career journey.
