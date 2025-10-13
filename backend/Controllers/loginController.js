@@ -1,6 +1,6 @@
 const LoginHistory = require("../Model/LoginHistory");
-const useragent = require("user-agent");
 const requestIp = require("request-ip");
+const useragent = require("user-agent");
 
 exports.trackLogin = async (req, res) => {
   try {
@@ -18,7 +18,7 @@ exports.trackLogin = async (req, res) => {
     await loginRecord.save();
     res.status(201).json({ message: "Login tracked", loginRecord });
   } catch (err) {
-    console.error("❌ Error tracking login:", err.message);
     res.status(500).json({ error: err.message });
   }
 };
+
