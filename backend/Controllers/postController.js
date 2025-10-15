@@ -43,7 +43,7 @@ exports.createPost = async (req, res) => {
       });
     }
 
-    const allowed = await canPost(user._id); // Use MongoDB _id here
+    const allowed = await canPost(user._id);
     if (!allowed) {
       return res.status(400).json({ message: "Post limit reached for today" });
     }
@@ -59,4 +59,24 @@ exports.createPost = async (req, res) => {
     console.error("❌ Error in createPost:", err);
     res.status(500).json({ error: err.message });
   }
+};
+
+// ✅ Get All Posts
+exports.getPosts = async (req, res) => {
+  try {
+    const posts = await Post.find().populate("userId", "name");
+    res.json(posts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// ✅ Like Post (stub)
+exports.likePost = async (req, res) => {
+  res.json({ message: "👍 Like post route working (logic to be added)" });
+};
+
+// ✅ Comment Post (stub)
+exports.commentPost = async (req, res) => {
+  res.json({ message: "💬 Comment post route working (logic to be added)" });
 };
