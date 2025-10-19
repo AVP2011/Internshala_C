@@ -14,6 +14,12 @@ router.post("/like", postController.likePost);
 // ✅ Add a comment
 router.post("/comment", postController.commentPost);
 
+router.post("/debug", (req, res) => {
+  console.log("🔥 Incoming body:", req.body);
+  res.send("Debug route hit");
+});
+
+
 // ✅ Test route for debugging
 router.get("/test", (_req, res) => {
   res.send("✅ Test route working");

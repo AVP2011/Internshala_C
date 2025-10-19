@@ -1,0 +1,60 @@
+{
+  "navbar": {
+    "internships": "实习",
+    "jobs": "工作",
+    "searchPlaceholder": "搜索机会..."
+  },
+  "filters": {
+    "title": "筛选条件",
+    "clear": "清除全部",
+    "category": "类别",
+    "categoryPlaceholder": "例如 市场营销实习",
+    "location": "地点",
+    "locationPlaceholder": "例如 孟买",
+    "workFromHome": "远程工作",
+    "partTime": "兼职",
+    "stipend": "每月津贴 (₹)",
+    "showMobile": "显示筛选条件"
+  },
+  "jobs": {
+    "found": "找到的工作",
+    "hiring": "正在招聘",
+    "location": "地点",
+    "salary": "薪资",
+    "label": "工作",
+    "recent": "最近发布",
+    "viewDetails": "查看详情"
+  },
+  "internships": {
+    "found": "找到的实习",
+    "hiring": "正在招聘",
+    "startDate": "开始日期",
+    "location": "地点",
+    "stipend": "津贴",
+    "label": "实习",
+    "recent": "最近发布",
+    "viewDetails": "查看详情"
+  },
+  "slides": [
+    {
+      "pattern": "pattern-1",
+      "title": "开启你的职业旅程",
+      "bgColor": "bg-indigo-600"
+    },
+    {
+      "pattern": "pattern-2",
+      "title": "向最优秀的人学习",
+      "bgColor": "bg-blue-600"
+    },
+    {
+      "pattern": "pattern-3",
+      "title": "提升你的技能",
+      "bgColor": "bg-purple-600"
+    },
+    {
+      "pattern": "pattern-4",
+      "title": "与顶尖公司建立联系",
+      "bgColor": "bg-teal-600"
+    }
+  ]
+}

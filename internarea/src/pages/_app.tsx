@@ -6,9 +6,11 @@ import { store } from "../store/store";
 import { Provider, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { auth } from "@/firebase/firebase";
-import { login, logout } from "../Feature/userSlice"; // ✅ adjust path if needed
+import { login, logout } from "../Feature/userSlice";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { I18nextProvider, useTranslation } from "react-i18next";
+import i18n from "../i18n/i18n"; // ✅ already initialized with SSR-safe config
 
 // ✅ Auth listener as a component
 function AuthListener() {
@@ -21,7 +23,7 @@ function AuthListener() {
           login({
             uid: authUser.uid,
             photo: authUser.photoURL,
-            name: authUser.displayName,
+            name: authUser.displayName ?? undefined,
             email: authUser.email,
             phoneNumber: authUser.phoneNumber,
           })
@@ -31,25 +33,37 @@ function AuthListener() {
       }
     });
 
-    // cleanup
     return () => unsubscribe();
   }, [dispatch]);
 
-  return null; // it doesn't render anything
+  return null;
 }
 
-export default function App({ Component, pageProps }: AppProps) {
+// ✅ Wrapper to delay rendering until i18n is ready
+function AppContent({ Component, pageProps }: AppProps) {
+  const { ready } = useTranslation();
+
+  if (!ready) return null; // Prevent hydration mismatch
+
   return (
-    <Provider store={store}>
-      <AuthListener />
-      <div className="bg-gray-500 min-h-screen flex flex-col">
-        <ToastContainer />
-        <Navbar />
-        <main className="flex-grow">
-          <Component {...pageProps} />
-        </main>
-        <Footer />
-      </div>
-    </Provider>
+    <div className="bg-gray-500 min-h-screen flex flex-col">
+      <ToastContainer />
+      <Navbar />
+      <main className="flex-grow">
+        <Component {...pageProps} />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+export default function App(props: AppProps) {
+  return (
+    <I18nextProvider i18n={i18n}>
+      <Provider store={store}>
+        <AuthListener />
+        <AppContent {...props} />
+      </Provider>
+    </I18nextProvider>
   );
 }

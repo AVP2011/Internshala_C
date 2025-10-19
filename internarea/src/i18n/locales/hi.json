@@ -1,0 +1,44 @@
+{
+  "navbar": {
+    "internships": "इंटर्नशिप्स",
+    "jobs": "नौकरियाँ",
+    "searchPlaceholder": "अवसर खोजें..."
+  },
+  "filters": {
+    "title": "फ़िल्टर",
+    "clear": "सभी हटाएं",
+    "category": "श्रेणी",
+    "categoryPlaceholder": "जैसे मार्केटिंग इंटर्न",
+    "location": "स्थान",
+    "locationPlaceholder": "जैसे मुंबई",
+    "workFromHome": "घर से काम",
+    "partTime": "पार्ट-टाइम",
+    "stipend": "मासिक स्टाइपेंड (₹)",
+    "showMobile": "फ़िल्टर दिखाएं"
+  },
+  "jobs": {
+    "found": "नौकरियाँ मिलीं",
+    "hiring": "सक्रिय भर्ती",
+    "location": "स्थान",
+    "salary": "वेतन",
+    "label": "नौकरी",
+    "recent": "हाल ही में पोस्ट की गई",
+    "viewDetails": "विवरण देखें"
+  },
+  "internships": {
+    "found": "इंटर्नशिप्स मिलीं",
+    "hiring": "सक्रिय भर्ती",
+    "startDate": "प्रारंभ तिथि",
+    "location": "स्थान",
+    "stipend": "स्टाइपेंड",
+    "label": "इंटर्नशिप",
+    "recent": "हाल ही में पोस्ट की गई",
+    "viewDetails": "विवरण देखें"
+  },
+  "slides": [
+    { "pattern": "pattern-1", "title": "अपने करियर की शुरुआत करें", "bgColor": "bg-indigo-600" },
+    { "pattern": "pattern-2", "title": "सर्वश्रेष्ठ से सीखें", "bgColor": "bg-blue-600" },
+    { "pattern": "pattern-3", "title": "अपनी क्षमताओं को बढ़ाएं", "bgColor": "bg-purple-600" },
+    { "pattern": "pattern-4", "title": "शीर्ष कंपनियों से जुड़ें", "bgColor": "bg-teal-600" }
+  ]
+}

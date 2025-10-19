@@ -1,0 +1,44 @@
+{
+  "navbar": {
+    "internships": "Stages",
+    "jobs": "Emplois",
+    "searchPlaceholder": "Rechercher des opportunités..."
+  },
+  "filters": {
+    "title": "Filtres",
+    "clear": "Tout effacer",
+    "category": "Catégorie",
+    "categoryPlaceholder": "ex. Stage marketing",
+    "location": "Lieu",
+    "locationPlaceholder": "ex. Mumbai",
+    "workFromHome": "Télétravail",
+    "partTime": "Temps partiel",
+    "stipend": "Indemnité mensuelle (₹)",
+    "showMobile": "Afficher les filtres"
+  },
+  "jobs": {
+    "found": "Emplois trouvés",
+    "hiring": "Recrutement actif",
+    "location": "Lieu",
+    "salary": "Salaire",
+    "label": "Emploi",
+    "recent": "Publié récemment",
+    "viewDetails": "Voir les détails"
+  },
+  "internships": {
+    "found": "Stages trouvés",
+    "hiring": "Recrutement actif",
+    "startDate": "Date de début",
+    "location": "Lieu",
+    "stipend": "Indemnité",
+    "label": "Stage",
+    "recent": "Publié récemment",
+    "viewDetails": "Voir les détails"
+  },
+  "slides": [
+    { "pattern": "pattern-1", "title": "Commencez votre parcours professionnel", "bgColor": "bg-indigo-600" },
+    { "pattern": "pattern-2", "title": "Apprenez des meilleurs", "bgColor": "bg-blue-600" },
+    { "pattern": "pattern-3", "title": "Développez vos compétences", "bgColor": "bg-purple-600" },
+    { "pattern": "pattern-4", "title": "Connectez-vous avec les meilleures entreprises", "bgColor": "bg-teal-600" }
+  ]
+}

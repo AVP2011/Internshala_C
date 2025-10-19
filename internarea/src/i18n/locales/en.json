@@ -1,0 +1,44 @@
+{
+  "navbar": {
+    "internships": "Internships",
+    "jobs": "Jobs",
+    "searchPlaceholder": "Search opportunities..."
+  },
+  "filters": {
+    "title": "Filters",
+    "clear": "Clear all",
+    "category": "Category",
+    "categoryPlaceholder": "e.g. Marketing Intern",
+    "location": "Location",
+    "locationPlaceholder": "e.g. Mumbai",
+    "workFromHome": "Work from home",
+    "partTime": "Part-time",
+    "stipend": "Monthly Stipend (₹)",
+    "showMobile": "Show Filters"
+  },
+  "jobs": {
+    "found": "Jobs found",
+    "hiring": "Actively Hiring",
+    "location": "Location",
+    "salary": "Salary",
+    "label": "Job",
+    "recent": "Posted recently",
+    "viewDetails": "View Details"
+  },
+  "internships": {
+    "found": "Internships found",
+    "hiring": "Actively Hiring",
+    "startDate": "Start Date",
+    "location": "Location",
+    "stipend": "Stipend",
+    "label": "Internship",
+    "recent": "Posted recently",
+    "viewDetails": "View Details"
+  },
+  "slides": [
+    { "pattern": "pattern-1", "title": "Start Your Career Journey", "bgColor": "bg-indigo-600" },
+    { "pattern": "pattern-2", "title": "Learn From The Best", "bgColor": "bg-blue-600" },
+    { "pattern": "pattern-3", "title": "Grow Your Skills", "bgColor": "bg-purple-600" },
+    { "pattern": "pattern-4", "title": "Connect With Top Companies", "bgColor": "bg-teal-600" }
+  ]
+}

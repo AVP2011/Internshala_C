@@ -1,0 +1,44 @@
+{
+  "navbar": {
+    "internships": "Pasantías",
+    "jobs": "Trabajos",
+    "searchPlaceholder": "Buscar oportunidades..."
+  },
+  "filters": {
+    "title": "Filtros",
+    "clear": "Borrar todo",
+    "category": "Categoría",
+    "categoryPlaceholder": "ej. Pasantía de marketing",
+    "location": "Ubicación",
+    "locationPlaceholder": "ej. Mumbai",
+    "workFromHome": "Trabajo remoto",
+    "partTime": "Medio tiempo",
+    "stipend": "Estipendio mensual (₹)",
+    "showMobile": "Mostrar filtros"
+  },
+  "jobs": {
+    "found": "Trabajos encontrados",
+    "hiring": "Contratación activa",
+    "location": "Ubicación",
+    "salary": "Salario",
+    "label": "Trabajo",
+    "recent": "Publicado recientemente",
+    "viewDetails": "Ver detalles"
+  },
+  "internships": {
+    "found": "Pasantías encontradas",
+    "hiring": "Contratación activa",
+    "startDate": "Fecha de inicio",
+    "location": "Ubicación",
+    "stipend": "Estipendio",
+    "label": "Pasantía",
+    "recent": "Publicado recientemente",
+    "viewDetails": "Ver detalles"
+  },
+  "slides": [
+    { "pattern": "pattern-1", "title": "Comienza tu carrera profesional", "bgColor": "bg-indigo-600" },
+    { "pattern": "pattern-2", "title": "Aprende de los mejores", "bgColor": "bg-blue-600" },
+    { "pattern": "pattern-3", "title": "Desarrolla tus habilidades", "bgColor": "bg-purple-600" },
+    { "pattern": "pattern-4", "title": "Conéctate con grandes empresas", "bgColor": "bg-teal-600" }
+  ]
+}

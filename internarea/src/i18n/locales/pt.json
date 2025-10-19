@@ -1,0 +1,44 @@
+{
+  "navbar": {
+    "internships": "Estágios",
+    "jobs": "Empregos",
+    "searchPlaceholder": "Buscar oportunidades..."
+  },
+  "filters": {
+    "title": "Filtros",
+    "clear": "Limpar tudo",
+    "category": "Categoria",
+    "categoryPlaceholder": "ex. Estágio em marketing",
+    "location": "Localização",
+    "locationPlaceholder": "ex. Mumbai",
+    "workFromHome": "Trabalho remoto",
+    "partTime": "Meio período",
+    "stipend": "Bolsa mensal (₹)",
+    "showMobile": "Mostrar filtros"
+  },
+  "jobs": {
+    "found": "Empregos encontrados",
+    "hiring": "Contratação ativa",
+    "location": "Localização",
+    "salary": "Salário",
+    "label": "Emprego",
+    "recent": "Publicado recentemente",
+    "viewDetails": "Ver detalhes"
+  },
+  "internships": {
+    "found": "Estágios encontrados",
+    "hiring": "Contratação ativa",
+    "startDate": "Data de início",
+    "location": "Localização",
+    "stipend": "Bolsa",
+    "label": "Estágio",
+    "recent": "Publicado recentemente",
+    "viewDetails": "Ver detalhes"
+  },
+  "slides": [
+    { "pattern": "pattern-1", "title": "Comece sua jornada de carreira", "bgColor": "bg-indigo-600" },
+    { "pattern": "pattern-2", "title": "Aprenda com os melhores", "bgColor": "bg-blue-600" },
+    { "pattern": "pattern-3", "title": "Aprimore suas habilidades", "bgColor": "bg-purple-600" },
+    { "pattern": "pattern-4", "title": "Conecte-se com grandes empresas", "bgColor": "bg-teal-600" }
+  ]
+}
