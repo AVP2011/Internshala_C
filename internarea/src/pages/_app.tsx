@@ -25,7 +25,7 @@ function AuthListener() {
             photo: authUser.photoURL,
             name: authUser.displayName ?? undefined,
             email: authUser.email,
-            phoneNumber: authUser.phoneNumber,
+            phone: authUser.phoneNumber,
           })
         );
       } else {
