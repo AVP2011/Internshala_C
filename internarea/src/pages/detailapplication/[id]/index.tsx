@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { Building2, Calendar, FileText, Loader2, User, CheckCircle2, XCircle } from "lucide-react";
+import { Building2, Calendar, FileText, Loader2, User } from "lucide-react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -30,20 +30,6 @@ const ApplicationDetail = () => {
       fetchData();
     }
   }, [id]);
-
-  const handleUpdateStatus = async (status: "accepted" | "rejected") => {
-    try {
-      await axios.put(
-        `https://internshala-c.onrender.com/api/application/${id}`,
-        { status } // ✅ send correct field name
-      );
-      setData((prev: any) => ({ ...prev, status }));
-      toast.success(`Application ${status}`);
-    } catch (error) {
-      console.error("Error updating application:", error);
-      toast.error("Failed to update application");
-    }
-  };
 
   if (loading) {
     return (
@@ -148,24 +134,7 @@ const ApplicationDetail = () => {
                   </p>
                 </div>
               </div>
-
-              {/* Accept/Reject Buttons */}
-              <div className="flex space-x-4">
-                <button
-                  onClick={() => handleUpdateStatus("accepted")}
-                  className="flex items-center space-x-2 px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200"
-                >
-                  <CheckCircle2 className="h-5 w-5" />
-                  <span>Accept</span>
-                </button>
-                <button
-                  onClick={() => handleUpdateStatus("rejected")}
-                  className="flex items-center space-x-2 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200"
-                >
-                  <XCircle className="h-5 w-5" />
-                  <span>Reject</span>
-                </button>
-              </div>
+              {/* ✅ No accept/reject buttons here — just status display */}
             </div>
           </div>
         </div>
