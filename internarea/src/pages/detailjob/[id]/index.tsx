@@ -1,13 +1,8 @@
-// pages/detailjob/[id]/index.tsx
+"use client";
 import { selectUser } from "@/Feature/userSlice";
 import axios from "axios";
 import {
   ArrowUpRight,
-  Calendar,
-  Clock,
-  DollarSign,
-  ExternalLink,
-  MapPin,
   X,
 } from "lucide-react";
 import Link from "next/link";
@@ -25,15 +20,17 @@ const JobDetail = () => {
   const [availability, setAvailability] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // TODO: Replace with your actual logged-in user object
-  const user =   useSelector(selectUser);
-  // Fetch job details
+  const user = useSelector(selectUser);
+
+  // ✅ Fetch job details
   useEffect(() => {
     if (!id) return;
 
     const fetchJob = async () => {
       try {
-        const res = await axios.get(`https://internshala-c.onrender.com/api/job/${id}`);
+        const res = await axios.get(
+          `https://internshala-c.onrender.com/api/job/${id}`
+        );
         setJobData(res.data);
       } catch (error) {
         console.error("Error fetching job:", error);
@@ -43,7 +40,7 @@ const JobDetail = () => {
     fetchJob();
   }, [id]);
 
-  // Submit job application
+  // ✅ Submit job application
   const handleSubmitApplication = async () => {
     if (!coverLetter.trim()) {
       toast.error("Please write a cover letter");
@@ -55,20 +52,26 @@ const JobDetail = () => {
     }
 
     const applicationData = {
-      user,
+      uid: user?.uid,
+      name: user?.name,
+      email: user?.email,
+      photo: user?.photo,
       jobId: id,
       company: jobData?.company || "",
-      category: jobData?.category || "",
+      category: jobData?.category || "job",
       coverLetter,
       availability,
     };
 
     try {
       setIsSubmitting(true);
-      await axios.post(`s://internshala-c.onrender.com/api/application`, applicationData);
+      await axios.post(
+        `https://internshala-c.onrender.com/api/application`,
+        applicationData
+      );
       toast.success("Application submitted successfully!");
       setIsModalOpen(false);
-      router.push("/job"); // redirect to jobs page after submission
+      router.push("/applications"); // ✅ redirect to applications page
     } catch (error) {
       console.error(error);
       toast.error("Failed to submit application");
@@ -94,19 +97,29 @@ const JobDetail = () => {
             <ArrowUpRight className="h-5 w-5" />
             <span className="font-medium">Actively Hiring</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{jobData.title}</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {jobData.title}
+          </h1>
           <p className="text-lg text-gray-600 mb-4">{jobData.company}</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-gray-600">
-            <div><strong>Location:</strong> {jobData.location}</div>
-            <div><strong>Category:</strong> {jobData.category}</div>
-            <div><strong>Salary:</strong> {jobData.salary}</div>
+            <div>
+              <strong>Location:</strong> {jobData.location}
+            </div>
+            <div>
+              <strong>Category:</strong> {jobData.category}
+            </div>
+            <div>
+              <strong>Salary:</strong> {jobData.salary}
+            </div>
           </div>
         </div>
 
         {/* About Company */}
         {jobData.aboutCompany && (
           <div className="p-6 border-b">
-            <h2 className="text-xl font-bold text-gray-900 mb-2">About Company</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">
+              About Company
+            </h2>
             <p className="text-gray-600">{jobData.aboutCompany}</p>
           </div>
         )}
@@ -114,7 +127,9 @@ const JobDetail = () => {
         {/* About Job */}
         {jobData.aboutJob && (
           <div className="p-6 border-b">
-            <h2 className="text-xl font-bold text-gray-900 mb-2">About the Job</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">
+              About the Job
+            </h2>
             <p className="text-gray-600">{jobData.aboutJob}</p>
           </div>
         )}

@@ -1,3 +1,4 @@
+"use client";
 import { selectUser } from "@/Feature/userSlice";
 import axios from "axios";
 import {
@@ -15,7 +16,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-const Index = () => {
+const InternshipDetail = () => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -23,14 +24,18 @@ const Index = () => {
   const [availability, setAvailability] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [coverLetter, setCoverLetter] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const user = useSelector(selectUser);
 
-  // ✅ Fetch internship details from local backend
+  // ✅ Fetch internship details
   useEffect(() => {
     if (!id) return;
     const fetchData = async () => {
       try {
-        const res = await axios.get(`https://internshala-c.onrender.com/api/internship/${id}`);
+        const res = await axios.get(
+          `https://internshala-c.onrender.com/api/internship/${id}`
+        );
         setInternship(res.data);
       } catch (error) {
         console.error("Error fetching internship:", error);
@@ -48,7 +53,7 @@ const Index = () => {
     );
   }
 
-  // ✅ Submit application to local backend
+  // ✅ Submit application
   const handleSubmitApplication = async () => {
     if (!coverLetter.trim()) {
       toast.error("Please write a cover letter");
@@ -59,23 +64,32 @@ const Index = () => {
       return;
     }
 
-    try {
-      const applicationData = {
-        category: internshipData.category,
-        company: internshipData.company,
-        coverLetter:coverLetter,
-        user:user,
-        internshipId: id,
-        availability ,
-      };
+    const applicationData = {
+      uid: user?.uid,
+      name: user?.name,
+      email: user?.email,
+      photo: user?.photo,
+      internshipId: id,
+      company: internshipData.company,
+      category: internshipData.category || "internship",
+      coverLetter,
+      availability,
+    };
 
-      await axios.post(`https://internshala-c.onrender.com/api/application`, applicationData);
+    try {
+      setIsSubmitting(true);
+      await axios.post(
+        `https://internshala-c.onrender.com/api/application`,
+        applicationData
+      );
       toast.success("Application submitted successfully!");
       setIsModalOpen(false);
-      router.push("/internship");
+      router.push("/applications"); // ✅ redirect to applications page
     } catch (error) {
       console.error(error);
       toast.error("Failed to submit application");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -109,7 +123,8 @@ const Index = () => {
           <div className="mt-4 flex items-center space-x-2">
             <Clock className="h-4 w-4 text-green-500" />
             <span className="text-green-500 text-sm">
-              Posted on {new Date(internshipData.createdAt).toLocaleDateString()}
+              Posted on{" "}
+              {new Date(internshipData.createdAt).toLocaleDateString()}
             </span>
           </div>
         </div>
@@ -159,12 +174,21 @@ const Index = () => {
 
         {/* Apply Button */}
         <div className="p-6 flex justify-center">
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition duration-150"
-          >
-            Apply Now
-          </button>
+          {user ? (
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition duration-150"
+            >
+              Apply Now
+            </button>
+          ) : (
+            <Link
+              href="/"
+              className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition duration-150"
+            >
+              Sign up to apply
+            </Link>
+          )}
         </div>
       </div>
 
@@ -172,44 +196,29 @@ const Index = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-gray-900">
-                  Apply to {internshipData.company}
-                </h2>
-                <button
-                  onClick={() => setIsModalOpen(false)}
-                  className="text-gray-400 hover:text-gray-600"
-                >
-                  <X className="h-6 w-6" />
-                </button>
-              </div>
+            <div className="p-6 border-b flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Apply to {internshipData.company}
+              </h2>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-6 w-6" />
+              </button>
             </div>
             <div className="p-6 space-y-6">
-              {/* Resume Section */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Your Resume
-                </h3>
-                <p className="text-gray-600">
-                  Your current resume will be submitted with the application
-                </p>
-              </div>
-
               {/* Cover Letter */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   Cover Letter
                 </h3>
-                <p className="text-gray-600 mb-2">
-                  Why should you be selected for this internship?
-                </p>
                 <textarea
                   value={coverLetter}
                   onChange={(e) => setCoverLetter(e.target.value)}
                   className="w-full h-32 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 text-black"
                   placeholder="Write your cover letter here..."
-                ></textarea>
+                />
               </div>
 
               {/* Availability */}
@@ -238,17 +247,19 @@ const Index = () => {
                 </div>
               </div>
 
+              {/* Submit Button */}
               <div className="flex justify-end pt-4">
                 {user ? (
                   <button
                     onClick={handleSubmitApplication}
-                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700" 
+                    disabled={isSubmitting}
+                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
                   >
-                    Submit Application
+                    {isSubmitting ? "Submitting..." : "Submit Application"}
                   </button>
                 ) : (
                   <Link
-                    href={`/`}
+                    href="/"
                     className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
                   >
                     Sign up to apply
@@ -263,4 +274,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default InternshipDetail;

@@ -1,32 +1,34 @@
+"use client";
 import axios from "axios";
 import { Building2, Calendar, FileText, Loader2, User } from "lucide-react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-const index = () => {
+const ApplicationDetail = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [loading, setloading] = useState(false);
-  const [data, setdata] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<any>(null);
+
   useEffect(() => {
-    const fetchdata = async () => {
+    const fetchData = async () => {
       try {
-        setloading(true);
+        setLoading(true);
         const res = await axios.get(
           `https://internshala-c.onrender.com/api/application/${id}`
         );
-        console.log(res.data);
-        setdata(res.data);
+        setData(res.data);
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching application:", error);
       } finally {
-        setloading(false);
+        setLoading(false);
       }
     };
     if (id) {
-      fetchdata();
+      fetchData();
     }
   }, [id]);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -37,6 +39,15 @@ const index = () => {
       </div>
     );
   }
+
+  if (!data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-600">
+        No application found.
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <section key={data._id} className="max-w-6xl mx-auto px-4">
@@ -47,7 +58,7 @@ const index = () => {
               <img
                 alt="Applicant photo"
                 className="w-full h-full object-cover"
-                src={data?.user?.photo}
+                src={data?.user?.photo || "/default-profile.png"}
               />
               {data.status && (
                 <div
@@ -99,11 +110,13 @@ const index = () => {
                     </span>
                   </div>
                   <p className="text-gray-900 font-semibold">
-                    {new Date(data.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
+                    {data.createdAt
+                      ? new Date(data.createdAt).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })
+                      : "N/A"}
                   </p>
                 </div>
 
@@ -115,7 +128,7 @@ const index = () => {
                     </span>
                   </div>
                   <p className="text-gray-900 font-semibold">
-                    {data.user?.name}
+                    {data.user?.name || "Unknown"}
                   </p>
                 </div>
               </div>
@@ -127,4 +140,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default ApplicationDetail;
