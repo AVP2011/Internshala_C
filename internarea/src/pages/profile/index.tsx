@@ -1,8 +1,7 @@
-import React from 'react';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
 import { useSelector } from "react-redux";
-import { selectUser } from '@/Feature/userSlice';
-
+import { selectUser } from "@/Feature/userSlice";
 
 const ProfilePage: React.FC = () => {
   const user = useSelector(selectUser);
@@ -28,20 +27,20 @@ const ProfilePage: React.FC = () => {
           <div className="text-white">
             <h1 className="text-2xl font-bold">{user.name}</h1>
             <p className="text-sm mt-1">{user.email}</p>
-            <p className="text-sm mt-1">{user.phone || "-"}</p>
-            <p className="text-sm mt-1">{user.college || "-"}</p>
-            <p className="text-sm mt-1">{user.location || "-"}</p>
+            {user.phone && <p className="text-sm mt-1">{user.phone}</p>}
+            {user.college && <p className="text-sm mt-1">{user.college}</p>}
+            {user.location && <p className="text-sm mt-1">{user.location}</p>}
           </div>
         </div>
 
         {/* Action Buttons */}
         <div className="p-6 flex gap-4">
           <Link
-  href="/userapplication"
-  className="bg-[#008bdc] text-white px-4 py-2 rounded-md font-medium hover:bg-[#006fa8]"
->
-  View Applications
-</Link>
+            href="/userapplication"
+            className="bg-[#008bdc] text-white px-4 py-2 rounded-md font-medium hover:bg-[#006fa8]"
+          >
+            View Applications
+          </Link>
           <Link
             href="/editprofile"
             className="px-6 py-2 bg-gray-200 text-gray-800 rounded-md font-medium hover:bg-gray-300"
@@ -65,7 +64,9 @@ const ProfilePage: React.FC = () => {
             <p className="mt-1 text-gray-800">{user.phone || "-"}</p>
           </div>
           <div>
-            <h2 className="font-semibold text-gray-600">College / Organization</h2>
+            <h2 className="font-semibold text-gray-600">
+              College / Organization
+            </h2>
             <p className="mt-1 text-gray-800">{user.college || "-"}</p>
           </div>
           <div>
