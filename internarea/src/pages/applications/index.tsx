@@ -63,7 +63,7 @@ const ApplicationsPage: React.FC = () => {
   // Handle accept/reject
   const handleAcceptReject = async (id: string, action: "accepted" | "rejected") => {
     try {
-      const res = await axios.put(`https://internshala-c.onrender.com/api/application/${id}`, { action });
+      await axios.put(`https://internshala-c.onrender.com/api/application/${id}`, { action });
       setApplications((prev) =>
         prev.map((app) => (app._id === id ? { ...app, status: action } : app))
       );
