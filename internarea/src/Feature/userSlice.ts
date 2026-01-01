@@ -4,9 +4,12 @@ interface UserData {
   uid: string;
   name?: string;
   email: string | null;
-  phoneNumber: string | null;
-  photo: string | null;
+  phone?: string | null;        // renamed from phoneNumber
+  college?: string | null;
+  location?: string | null;
+  photo?: string | null;
 }
+
 
 interface UserState {
   value: UserData | null;

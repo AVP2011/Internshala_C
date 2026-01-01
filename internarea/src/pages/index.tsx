@@ -27,10 +27,26 @@ export default function SvgSlider() {
   ];
 
   const slides = [
-    { pattern: "pattern-1", title: "Start Your Career Journey", bgColor: "bg-indigo-600" },
-    { pattern: "pattern-2", title: "Learn From The Best", bgColor: "bg-blue-600" },
-    { pattern: "pattern-3", title: "Grow Your Skills", bgColor: "bg-purple-600" },
-    { pattern: "pattern-4", title: "Connect With Top Companies", bgColor: "bg-teal-600" },
+    {
+      pattern: "pattern-1",
+      title: "Start Your Career Journey",
+      bgColor: "bg-indigo-600",
+    },
+    {
+      pattern: "pattern-2",
+      title: "Learn From The Best",
+      bgColor: "bg-blue-600",
+    },
+    {
+      pattern: "pattern-3",
+      title: "Grow Your Skills",
+      bgColor: "bg-purple-600",
+    },
+    {
+      pattern: "pattern-4",
+      title: "Connect With Top Companies",
+      bgColor: "bg-teal-600",
+    },
   ];
 
   const stats = [
@@ -46,17 +62,34 @@ export default function SvgSlider() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [internshipRes, jobRes] = await Promise.all([
-          axios.get("https://internshala-c.onrender.com/api/internship"),
-          axios.get("https://internshala-c.onrender.com/api/job"),
-        ]);
+        const apiBase =
+          process.env.NEXT_PUBLIC_API_BASE_URL ||
+          "https://internshala-c.onrender.com";
 
-        setInternship(internshipRes.data);
-        setJob(jobRes.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+        if (!apiBase) {
+          console.error("API base URL is not defined.");
+          return;
+        }
+
+        try {
+          const [internshipRes, jobRes] = await Promise.all([
+            axios.get(`${apiBase}/api/internship`, { timeout: 10000 }),
+            axios.get(`${apiBase}/api/job`, { timeout: 10000 }),
+          ]);
+
+        setInternship(internshipRes.data || []);
+        setJob(jobRes.data || []);
+      } catch (error: any) {
+        console.error("Error fetching data:", error.message || error);
+        setInternship([]);
+        setJob([]);
+        } // Closing brace for the inner try block
+      } catch (error: any) {
+        console.error("Error fetching data:", error.message || error);
+        setInternship([]);
+        setJob([]);
       }
-    };
+    }; // Closing brace for fetchData function
     fetchData();
   }, []);
 
@@ -94,32 +127,77 @@ export default function SvgSlider() {
             <SwiperSlide key={index}>
               <div className={`relative h-[400px] ${slide.bgColor}`}>
                 <div className="absolute inset-0 opacity-20">
-                  <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    className="w-full h-full"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     {slide.pattern === "pattern-1" && (
-                      <pattern id="pattern-1" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                      <pattern
+                        id="pattern-1"
+                        x="0"
+                        y="0"
+                        width="20"
+                        height="20"
+                        patternUnits="userSpaceOnUse"
+                      >
                         <circle cx="10" cy="10" r="3" fill="white" />
                       </pattern>
                     )}
                     {slide.pattern === "pattern-2" && (
-                      <pattern id="pattern-2" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-                        <rect x="15" y="15" width="10" height="10" fill="white" />
+                      <pattern
+                        id="pattern-2"
+                        x="0"
+                        y="0"
+                        width="40"
+                        height="40"
+                        patternUnits="userSpaceOnUse"
+                      >
+                        <rect
+                          x="15"
+                          y="15"
+                          width="10"
+                          height="10"
+                          fill="white"
+                        />
                       </pattern>
                     )}
                     {slide.pattern === "pattern-3" && (
-                      <pattern id="pattern-3" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                      <pattern
+                        id="pattern-3"
+                        x="0"
+                        y="0"
+                        width="40"
+                        height="40"
+                        patternUnits="userSpaceOnUse"
+                      >
                         <path d="M0 20 L20 0 L40 20 L20 40 Z" fill="white" />
                       </pattern>
                     )}
                     {slide.pattern === "pattern-4" && (
-                      <pattern id="pattern-4" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+                      <pattern
+                        id="pattern-4"
+                        x="0"
+                        y="0"
+                        width="60"
+                        height="60"
+                        patternUnits="userSpaceOnUse"
+                      >
                         <path d="M30 5 L55 30 L30 55 L5 30 Z" fill="white" />
                       </pattern>
                     )}
-                    <rect x="0" y="0" width="100%" height="100%" fill={`url(#${slide.pattern})`} />
+                    <rect
+                      x="0"
+                      y="0"
+                      width="100%"
+                      height="100%"
+                      fill={`url(#${slide.pattern})`}
+                    />
                   </svg>
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <h2 className="text-4xl font-bold text-white">{slide.title}</h2>
+                  <h2 className="text-4xl font-bold text-white">
+                    {slide.title}
+                  </h2>
                 </div>
               </div>
             </SwiperSlide>
@@ -148,9 +226,9 @@ export default function SvgSlider() {
       </div>
 
       {/* Internships */}
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          Latest internships on Intern Area
-        </h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">
+        Latest internships on Intern Area
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
         {filteredInternships.map((internship: any, index: any) => (
           <div
